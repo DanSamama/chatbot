@@ -2,11 +2,18 @@
 This is the template server side for ChatBot
 """
 from bottle import route, run, template, static_file, request
+import datetime
 import json
 
 instructions = {
-    "hi": {"animation": "dancing", "msg": "Hello gorgeous, how are you?"},
+    "how are you?": {"animation": "dancing", "msg": "Hello gorgeous, how are you?"},
     "How old are you ?": {"animation": "dancing", "msg": "I am young and 27 years old"}
+}
+
+boto_words = {
+    "hi": {"animation": "dancing", "msg": "Hello gorgeous, how are you?"},
+    "shit": {"animation": "dancing", "msg": "Don't swear like that!!"},
+    "family": {"animation": "dancing", "msg": "I have a family of 4 little robots"}
 }
 
 @route('/', method='GET')
@@ -15,17 +22,44 @@ def index():
 
 def handleCompleteSentences(user_message):
     if user_message in instructions:
-        return json.dumps(instructions[user_message])
+        return instructions[user_message]
     return None
+
+
+def handleAskingForTime(user_message):
+    if "time" in user_message:
+        return {"animation": "bored", "msg": str(datetime.datetime.now())}
+    else:
+        return None
+
+
+def handleCommands(user_message):
+    if user_message.endswith("!"):
+        return {"animation": "no", "msg": "I am not your slave!"}
+    else:
+        return None
+
+
+def handleWords(user_message):
+    for word in user_message.split(" "):
+        if word in boto_words:
+            return boto_words[word]
+    return None
+
 
 @route("/chat", method='POST')
 def chat():
     user_message = request.POST.get('msg')
-    #Changing the humor of the bot
-    result = handleCompleteSentences(user_message)
+    result = handleCommands(user_message)
     if not result:
-        
-        return json.dumps({"msg":"I don't understand","animatoin":"no"})
+        result = handleAskingForTime(user_message)
+    if not result:
+        result = handleCompleteSentences(user_message)
+    if not result:
+        result = handleWords(user_message)
+    if not result:
+        result = {"msg": "I don't understand","animation": "no"}
+    return json.dumps(result)
 
 
 @route("/test", method='POST')
