@@ -105,14 +105,7 @@ ChatBot.sendMessage = function () {
     }
 };
 
-$.ajax("/test",{
-    type: "POST",
-    data: {"msg": "hello"},
-    dataType: "json",
-    contentType: "application/json"})
-    .done(function (data) {
-        console.log(data);
-    });
+
 
 
 
