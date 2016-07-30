@@ -12,8 +12,11 @@ instructions = {
 
 boto_words = {
     "hi": {"animation": "dancing", "msg": "Hello gorgeous, how are you?"},
+    "dan": {"animation":"giggling","msg":"Wow, what a beautiful name!!!"},
     "shit": {"animation": "dancing", "msg": "Don't swear like that!!"},
-    "family": {"animation": "dancing", "msg": "I have a family of 4 little robots"}
+    "family": {"animation": "dancing", "msg": "I have a family of 4 little robots"},
+    "good": {"animation": "ok", "msg": "I am happy for you"}
+
 }
 
 @route('/', method='GET')
