@@ -31,7 +31,7 @@ def handleCompleteSentences(user_message):
 
 def handleAskingForTime(user_message):
     if "time" in user_message:
-        return {"animation": "bored", "msg": str(datetime.datetime.now())}
+        return {"animation": "bored", "msg": str(datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))}
     else:
         return None
 
